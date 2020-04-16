@@ -77,7 +77,8 @@ def clean(args):
                         template_contents = file.read()
 
                     if sandbox_contents.strip() == template_contents.strip():
-                        os.remove(os.listdir(os.path.join(sandbox_dir, sandbox, sandbox_file)))                
+                        os.remove(os.path.join(sandbox_dir, sandbox, sandbox_file))
+                        print("Removed", os.path.join(sandbox_dir, sandbox, sandbox_file))                
 
 
 def main():
@@ -103,7 +104,7 @@ def main():
 
     if args.lang is None:
         args.lang = "c++"
-    elif args.land == "py":
+    elif args.lang == "py":
         args.lang = "python"
 
     if args.create:
