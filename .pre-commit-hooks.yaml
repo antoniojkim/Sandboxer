@@ -4,3 +4,4 @@
     entry: sandboxer --clean
     language: system
     always_run: True
+    pass_filenames: False
