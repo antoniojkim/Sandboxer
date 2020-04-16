@@ -42,12 +42,12 @@ def create(args):
 
 
 def build(args):
-    if args.name is not None:
-        recent_sandbox_dir = os.path.join(sandbox_dir, args.name)
+    if args.name is not None and len(args.name.strip()) > 0:
+        recent_sandbox_dir = os.path.join(sandbox_dir, args.name.strip())
     else:
         with open(os.path.join(sandbox_dir, ".info")) as file:
             sandbox = file.read()
-            recent_sandbox_dir = os.path.join(sandbox_dir, sandbox)
+            recent_sandbox_dir = os.path.join(sandbox_dir, sandbox.strip())
 
     os.chdir(recent_sandbox_dir)
 
