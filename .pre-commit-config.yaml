@@ -1,0 +1,6 @@
+-   id: clean-sandboxer
+    name: Clean Sandboxer
+    description: Remove unchanged sandboxer template files.
+    entry: sandboxer --clean
+    language: python
+    always_run: True
