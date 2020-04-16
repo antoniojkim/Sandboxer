@@ -2,5 +2,5 @@
     name: Clean Sandboxer
     description: Remove unchanged sandboxer template files.
     entry: sandboxer --clean
-    language: python
+    language: system
     always_run: True
