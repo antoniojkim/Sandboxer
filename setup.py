@@ -6,7 +6,7 @@ with open("README.md", "r") as file:
 
 setuptools.setup(
     name="sandboxer-antoniojkim",
-    version="0.0.2",
+    version="0.0.3",
     author="Antonio J Kim",
     author_email="contact@antoniojkim.com",
     description="A fast, lightweight sandbox tool for experimenting with code",
@@ -20,6 +20,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.6",
-    entry_points={"console_scripts": ["sandboxer = core.sandboxer:main"]},
+    entry_points={"console_scripts": ["sandboxer = sandboxer.sandboxer:main"]},
     include_package_data=True,
 )
