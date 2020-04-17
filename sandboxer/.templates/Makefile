@@ -1,6 +1,15 @@
+CXX = g++
+CXXFLAGS = -Ofast -std=c++17 -Wall -MMD -Werror=vla -DDEBUG
+EXEC = sandbox
 
-sandbox:
-	python3 -u Sandboxer/sandboxer.py --create --name $(name) --lang $(lang)
+OBJECTS =  sandbox.o
+DEPENDS = ${OBJECTS:.o=.d}
 
-experiment:
-	python3 -u Sandboxer/sandboxer.py --build --name $(name) --lang $(lang)
+${EXEC}: ${OBJECTS}
+	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC}
+
+-include ${DEPENDS}
+
+clean:
+	rm ${OBJECTS} ${EXEC} ${DEPENDS}
+.PHONY: clean

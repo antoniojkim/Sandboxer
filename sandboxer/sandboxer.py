@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import logging
 import os
 import pathlib
 
@@ -8,6 +9,10 @@ import subprocess
 from shutil import copyfile
 
 from datetime import datetime
+
+log = logging.getLogger(__file__)
+
+templates = {"c++": {"main": ["sandbox.cc"], "other": ["Makefile"]}, "python": {"main": ["sandbox.py"]}}
 
 
 curr_dir = os.getcwd()
@@ -34,8 +39,9 @@ def create(args):
 
     os.mkdir(new_sandbox_dir)
 
-    for template in os.listdir(template_dir):
-        copyfile(os.path.join(template_dir, template), os.path.join(new_sandbox_dir, template))
+    template = templates.get(args.lang, {})
+    for file in template.get("main", []) + template.get("other", []):
+        copyfile(os.path.join(template_dir, file), os.path.join(new_sandbox_dir, file))
 
     with open(os.path.join(sandbox_dir, ".info"), "w") as file:
         file.write(name)
@@ -68,17 +74,30 @@ def build(args):
 def clean(args):
     for sandbox in os.listdir(sandbox_dir):
         if os.path.isdir(sandbox) and sandbox not in (".sandbox", ".templates"):
-            for sandbox_file in os.listdir(os.path.join(sandbox_dir, sandbox)):
-                if os.path.isfile(os.path.join(template_dir, sandbox_file)):
-                    with open(os.listdir(os.path.join(sandbox_dir, sandbox, sandbox_file))) as file:
-                        sandbox_contents = file.read()
+            for lang, template in templates.items():
+                for sandbox_file in template.get("main", []):
+                    if os.path.isfile(os.path.join(sandbox_dir, sandbox, template)):
+                        with open(os.listdir(os.path.join(sandbox_dir, sandbox, sandbox_file))) as file:
+                            sandbox_contents = file.read()
 
-                    with open(os.listdir(os.path.join(template_dir, sandbox, sandbox_file))) as file:
-                        template_contents = file.read()
+                        with open(os.listdir(os.path.join(template_dir, sandbox, sandbox_file))) as file:
+                            template_contents = file.read()
 
-                    if sandbox_contents.strip() == template_contents.strip():
-                        os.remove(os.path.join(sandbox_dir, sandbox, sandbox_file))
-                        print("Removed", os.path.join(sandbox_dir, sandbox, sandbox_file))
+                        if sandbox_contents.strip() != template_contents.strip():
+                            break
+                    else:
+                        break
+                else:
+                    log.warn(f"Removed {sandbox} sandbox")
+                    os.rmdir(os.path.join(sandbox_dir, sandbox))
+                    break
+
+
+def info(args):
+    print("curr_dir:     ", curr_dir)
+    print("sandbox_dir:  ", sandbox_dir)
+    print("file_dir:     ", file_dir)
+    print("template_dir: ", template_dir)
 
 
 def main():
@@ -96,6 +115,7 @@ def main():
     group.add_argument("--create", action="store_true")
     group.add_argument("--build", action="store_true")
     group.add_argument("--clean", action="store_true")
+    group.add_argument("--info", action="store_true")
 
     args = parser.parse_args()
 
@@ -110,6 +130,8 @@ def main():
         build(args)
     elif args.clean:
         clean(args)
+    elif args.info:
+        info(args)
 
 
 if __name__ == "__main__":
