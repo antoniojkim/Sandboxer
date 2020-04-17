@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import setuptools
 
 with open("README.md", "r") as file:
@@ -18,10 +19,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.6',
-    entry_points={
-        'console_scripts': [
-            'sandboxer = core.sandboxer:main'
-        ]
-    }
+    python_requires=">=3.6",
+    entry_points={"console_scripts": ["sandboxer = core.sandboxer:main"]},
+    include_package_data=True,
 )

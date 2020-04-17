@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 import os
 import pathlib
@@ -34,8 +35,7 @@ def create(args):
     os.mkdir(new_sandbox_dir)
 
     for template in os.listdir(template_dir):
-        copyfile(os.path.join(template_dir, template),
-                 os.path.join(new_sandbox_dir, template))
+        copyfile(os.path.join(template_dir, template), os.path.join(new_sandbox_dir, template))
 
     with open(os.path.join(sandbox_dir, ".info"), "w") as file:
         file.write(name)
@@ -78,23 +78,20 @@ def clean(args):
 
                     if sandbox_contents.strip() == template_contents.strip():
                         os.remove(os.path.join(sandbox_dir, sandbox, sandbox_file))
-                        print("Removed", os.path.join(sandbox_dir, sandbox, sandbox_file))                
+                        print("Removed", os.path.join(sandbox_dir, sandbox, sandbox_file))
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--name",
-                        default=None,
-                        nargs='?',
-                        help="name of sandbox")
-    parser.add_argument('--lang',
-                        default='c++',
-                        nargs='?',
-                        choices=['c++', 'python', 'py'],
-                        help='sandbox language (default: %(default)s)')
-    parser.add_argument('--force', '-f',
-                        action="store_true",
-                        help='Forces sandbox action')
+    parser.add_argument("--name", default=None, nargs="?", help="name of sandbox")
+    parser.add_argument(
+        "--lang",
+        default="c++",
+        nargs="?",
+        choices=["c++", "python", "py"],
+        help="sandbox language (default: %(default)s)",
+    )
+    parser.add_argument("--force", "-f", action="store_true", help="Forces sandbox action")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--create", action="store_true")
     group.add_argument("--build", action="store_true")
