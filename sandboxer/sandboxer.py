@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import filecmp
 import logging
 import os
 import pathlib
@@ -22,6 +23,10 @@ template_dir = os.path.join(file_dir, ".templates")
 
 if not os.path.isdir(sandbox_dir):
     os.mkdir(sandbox_dir)
+if not os.path.isfile(os.path.join(sandbox_dir, "utils.h")) or not filecmp.cmp(
+    os.path.join(template_dir, "utils.h"), os.path.join(sandbox_dir, "utils.h"), shallow=False
+):
+    copyfile(os.path.join(template_dir, "utils.h"), os.path.join(sandbox_dir, "utils.h"))
 
 
 def create(args):
@@ -65,7 +70,7 @@ def build(args):
             run.communicate()
 
     elif args.lang == "python":
-        run = subprocess.Popen(f"python -u sandbox.py", shell=True)
+        run = subprocess.Popen("python -u sandbox.py", shell=True)
         run.communicate()
 
     os.chdir(curr_dir)

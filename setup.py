@@ -6,7 +6,7 @@ with open("README.md", "r") as file:
 
 setuptools.setup(
     name="sandboxer-antoniojkim",
-    version="0.0.3",
+    version="0.0.4",
     author="Antonio J Kim",
     author_email="contact@antoniojkim.com",
     description="A fast, lightweight sandbox tool for experimenting with code",
